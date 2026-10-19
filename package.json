@@ -1,0 +1,22 @@
+{
+  "name": "iram-prototype",
+  "version": "2.0.0",
+  "description": "IRAM - Intelligent Construction Material Lifecycle Management Platform",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": [
+    "construction",
+    "materials",
+    "surplus",
+    "waste-prediction",
+    "procurement",
+    "react",
+    "nodejs"
+  ],
+  "author": "IRAM ConTech Team",
+  "license": "ISC"
+}
