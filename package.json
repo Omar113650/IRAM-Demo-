@@ -6,8 +6,14 @@
     "start": "node backend/server.js",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm install && npm run build",
     "install:all": "cd backend && npm install && cd ../frontend && npm install"
   },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+
   "keywords": [
     "construction",
     "materials",
