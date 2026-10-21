@@ -20,10 +20,17 @@ import {
 } from 'lucide-react';
 
 export default function NavigationStackBar({
+  navHistory = [],
   navStack = [],
+  historyIndex = 0,
+  canGoBack = false,
+  canGoForward = false,
+  previousItem = null,
+  nextItem = null,
   currentView,
   selectedProjectId,
   onGoBack,
+  onGoForward,
   onJumpToStack,
   onResetToRoot,
   onOpenLanding,
@@ -32,6 +39,16 @@ export default function NavigationStackBar({
   const isAr = language === 'ar';
   const ChevronIcon = isAr ? ChevronLeft : ChevronRight;
   const BackArrowIcon = isAr ? ArrowRight : ArrowLeft;
+  const ForwardArrowIcon = isAr ? ArrowLeft : ArrowRight;
+
+  // Normalize history state
+  const history = navHistory.length > 0 ? navHistory : (navStack.length > 0 ? navStack : []);
+  const activeIndex = typeof historyIndex === 'number' ? historyIndex : Math.max(0, history.length - 1);
+  const actualCanGoBack = typeof canGoBack === 'boolean' ? canGoBack : activeIndex > 0;
+  const actualCanGoForward = typeof canGoForward === 'boolean' ? canGoForward : activeIndex < history.length - 1;
+  const prev = previousItem || (actualCanGoBack ? history[activeIndex - 1] : null);
+  const next = nextItem || (actualCanGoForward ? history[activeIndex + 1] : null);
+  const activeTrail = history.slice(0, activeIndex + 1);
 
   // View icons mapping for breadcrumbs
   const viewIconMap = {
@@ -56,10 +73,6 @@ export default function NavigationStackBar({
     'PRJ-003': { ar: 'أبراج كورنيش الإسكندرية', en: 'Alexandria Waterfront' }
   };
 
-  // Get previous stack item for the back button label
-  const canGoBack = navStack.length > 1;
-  const previousItem = canGoBack ? navStack[navStack.length - 2] : null;
-
   const currentProjectName = selectedProjectId && projectsMap[selectedProjectId]
     ? (isAr ? projectsMap[selectedProjectId].ar : projectsMap[selectedProjectId].en)
     : null;
@@ -67,36 +80,66 @@ export default function NavigationStackBar({
   return (
     <nav 
       aria-label="Navigation Stack and Breadcrumbs"
-      className="bg-white border border-[#CBD5E1] rounded-xl px-4 py-2.5 mb-5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-sm select-none"
+      className="bg-white border border-[#EAE5DE] rounded-xl px-3 sm:px-4 py-2.5 mb-5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-sm select-none"
     >
-      {/* Left / Start: Back Button & Trail */}
-      <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 flex-1 min-w-[280px]">
+      {/* Left / Start: Bidirectional Back & Forward Controls + Trail */}
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3 flex-1 min-w-0">
         
-        {/* Back Button (Stack Pop) */}
-        {canGoBack && previousItem ? (
+        {/* Navigation Action Buttons (Back & Forward) */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          {/* Home Quick Button */}
           <button
-            onClick={onGoBack}
-            className="group px-3 py-1.5 rounded-lg bg-[#EEF2F6] hover:bg-[#FEECE5] border border-[#CBD5E1] hover:border-[#E85312] text-[#0F172A] hover:text-[#E85312] font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer"
-            title={isAr ? `الرجوع إلى: ${previousItem.labelAr}` : `Back to: ${previousItem.labelEn}`}
-          >
-            <BackArrowIcon className="w-4 h-4 transition-transform group-hover:-translate-x-0.5 rtl:group-hover:translate-x-0.5 text-[#E85312]" />
-            <span>
-              {isAr ? 'رجوع' : 'Back'}
-            </span>
-            <span className="hidden md:inline text-xs text-[#64748B] group-hover:text-[#E85312] max-w-[140px] truncate">
-              ({isAr ? previousItem.labelAr : previousItem.labelEn})
-            </span>
-          </button>
-        ) : (
-          <button
+            type="button"
             onClick={onOpenLanding}
-            className="px-2.5 py-1.5 rounded-lg bg-[#EEF2F6] hover:bg-slate-200 border border-[#CBD5E1] text-[#475569] font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+            className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg bg-[#F7F5F1] hover:bg-[#FEECE5] border border-[#EAE5DE] text-[#6E6862] hover:text-[#26231F] font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs hover:-translate-y-0.5 active:scale-95"
             title={isAr ? 'الصفحة الرئيسية للموقع' : 'Public Landing Page'}
           >
             <Home className="w-3.5 h-3.5 text-[#E85312]" />
-            <span className="hidden sm:inline">{isAr ? 'الرئيسية' : 'Home'}</span>
+            <span className="hidden xl:inline">{isAr ? 'الرئيسية' : 'Home'}</span>
           </button>
-        )}
+
+          {/* Back Button (← رجوع) */}
+          <button
+            type="button"
+            onClick={onGoBack}
+            disabled={!actualCanGoBack && currentView === 'landing'}
+            className={`group px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all shadow-2xs ${
+              actualCanGoBack 
+                ? 'bg-[#F7F5F1] hover:bg-[#FEECE5] border-[#EAE5DE] hover:border-[#E85312] text-[#26231F] hover:text-[#E85312] cursor-pointer hover:-translate-y-0.5 active:scale-95' 
+                : 'bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed opacity-50'
+            }`}
+            title={prev ? (isAr ? `الرجوع إلى: ${prev.labelAr}` : `Back to: ${prev.labelEn}`) : (isAr ? 'رجوع' : 'Back')}
+          >
+            <BackArrowIcon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:-translate-x-0.5 rtl:group-hover:translate-x-0.5 ${actualCanGoBack ? 'text-[#E85312]' : 'text-slate-300'}`} />
+            <span>{isAr ? 'رجوع' : 'Back'}</span>
+            {prev && (
+              <span className="hidden lg:inline text-[11px] text-[#6E6862] group-hover:text-[#E85312] max-w-[120px] truncate font-normal">
+                ({isAr ? prev.labelAr : prev.labelEn})
+              </span>
+            )}
+          </button>
+
+          {/* Forward Button (تقدم →) */}
+          <button
+            type="button"
+            onClick={onGoForward}
+            disabled={!actualCanGoForward}
+            className={`group px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all shadow-2xs ${
+              actualCanGoForward 
+                ? 'bg-[#F7F5F1] hover:bg-[#FEECE5] border-[#EAE5DE] hover:border-[#E85312] text-[#26231F] hover:text-[#E85312] cursor-pointer hover:-translate-y-0.5 active:scale-95' 
+                : 'bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed opacity-50'
+            }`}
+            title={next ? (isAr ? `التقدم إلى: ${next.labelAr}` : `Forward to: ${next.labelEn}`) : (isAr ? 'تقدم' : 'Forward')}
+          >
+            <span>{isAr ? 'تقدم' : 'Forward'}</span>
+            {next && (
+              <span className="hidden lg:inline text-[11px] text-[#6E6862] group-hover:text-[#E85312] max-w-[120px] truncate font-normal">
+                ({isAr ? next.labelAr : next.labelEn})
+              </span>
+            )}
+            <ForwardArrowIcon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 ${actualCanGoForward ? 'text-[#E85312]' : 'text-slate-300'}`} />
+          </button>
+        </div>
 
         <div className="h-4 w-px bg-[#CBD5E1] hidden sm:block"></div>
 
@@ -114,9 +157,9 @@ export default function NavigationStackBar({
             </button>
           </li>
 
-          {/* Stack Trail Iteration */}
-          {navStack.map((item, index) => {
-            const isLast = index === navStack.length - 1;
+          {/* Active Trail Iteration */}
+          {activeTrail.map((item, index) => {
+            const isLast = index === activeTrail.length - 1;
             const ItemIcon = viewIconMap[item.view] || Layers;
             const label = isAr ? item.labelAr : item.labelEn;
 
@@ -161,7 +204,7 @@ export default function NavigationStackBar({
         )}
 
         {/* History depth indicator */}
-        {navStack.length > 2 && (
+        {history.length > 2 && (
           <button
             onClick={onResetToRoot}
             className="text-[11px] font-bold text-[#64748B] hover:text-[#0F172A] px-2 py-1 rounded-md border border-dashed border-[#CBD5E1] hover:bg-[#EEF2F6] flex items-center gap-1 transition-colors cursor-pointer"

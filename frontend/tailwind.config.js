@@ -10,38 +10,38 @@ export default {
         iram: {
           // Brand Colors
           primary: "#E85312",          // Primary brand orange
-          primaryHover: "#CC490F",     // Primary Hover
-          primaryLight: "#FEECE5",     // Primary Light
-          primaryText: "#0F172A",      // Primary Text (Obsidian Slate)
-          secondaryText: "#475569",    // Secondary Text (Darker, crisper slate-600)
+          primaryHover: "#CC4509",     // Primary Hover
+          primaryLight: "#FEECE5",     // Primary Light (Peach)
+          primaryText: "#26231F",      // Obsidian Slate / Architectural Charcoal
+          secondaryText: "#6E6862",    // Warm Muted Text
 
           // Neutral Colors
-          bg: "#EEF2F6",               // Rich balanced canvas background (replaces washed out #F7F9FB)
-          surface: "#FFFFFF",          // Surface
-          subtle: "#E2E8F0",           // Subtle Background (replaces #F1F5F9)
-          border: "#CBD5E1",           // Crisper, well-defined border (replaces faint #E2E8F0)
-          mutedText: "#64748B",        // Muted Text (replaces pale #94A3B8)
+          bg: "#FFFDF9",               // Warm Ivory Canvas Background
+          surface: "#FFFFFF",          // Surface Pure White
+          subtle: "#F7F5F1",           // Subtle Neutral Card Background
+          border: "#EAE5DE",           // Crisp Warm Architectural Border
+          mutedText: "#6E6862",        // Muted Slate/Charcoal
 
           // Semantic Colors
-          success: "#15803D",          // Success
-          successBg: "#DCFCE7",        // Success Background
-          warning: "#B45309",          // Warning
-          warningBg: "#FEF3C7",        // Warning Background
-          error: "#B91C1C",            // Error
+          success: "#15803D",          // Success Green
+          successBg: "#E8F1E4",        // Success Background
+          warning: "#B45309",          // Warning Amber
+          warningBg: "#F5ECD2",        // Warning Background
+          error: "#B91C1C",            // Error Red
           errorBg: "#FEE2E2",          // Error Background
-          info: "#1D4ED8",             // Info
+          info: "#1D4ED8",             // Info Blue
           infoBg: "#DBEAFE",           // Info Background
 
           // Backward compatibility mappings
           orange: "#E85312",
-          orangeDark: "#CC490F",
+          orangeDark: "#CC4509",
           orangeLight: "#FEECE5",
           orangeBorder: "#FDBA74",
-          dark: "#0F172A",
-          slate: "#1E293B",
-          bodyText: "#334155",
+          dark: "#26231F",
+          slate: "#3A3530",
+          bodyText: "#26231F",
           cardBg: "#FFFFFF",
-          pageBg: "#EEF2F6"
+          pageBg: "#FFFDF9"
         }
       },
       fontFamily: {

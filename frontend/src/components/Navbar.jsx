@@ -10,9 +10,11 @@ import {
   Truck,
   Building,
   ShieldAlert,
-  LogOut
+  LogOut,
+  Menu,
+  X
 } from 'lucide-react';
-import IramLogo from './IramLogo';
+import IramLogo, { RealEstateIconBox } from './IramLogo';
 
 export default function Navbar({ 
   currentRole, 
@@ -22,6 +24,7 @@ export default function Navbar({
   onOpenAssistant,
   onLogout,
   onOpenLanding,
+  onToggleMobileSidebar,
   unreadAlertsCount = 3
 }) {
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
@@ -73,26 +76,49 @@ export default function Navbar({
   const isSupplier = currentRole === 'Supplier';
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 border-b border-[#CBD5E1] shadow-xs backdrop-blur-md text-[#0F172A]">
+    <header className="sticky top-0 z-40 bg-[#FFFDF9]/95 border-b border-[#EAE5DE] shadow-xs backdrop-blur-md text-[#26231F]">
       <div className="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         
-        {/* Brand / Logo (Clickable to return to site home) */}
-        <button
-          onClick={onOpenLanding}
-          className="flex items-center gap-3 cursor-pointer group focus:outline-hidden text-left rtl:text-right"
-          title={isAr ? "العودة إلى الصفحة الرئيسية للموقع" : "Return to Home Page"}
-        >
-          <IramLogo className="h-9 w-auto group-hover:opacity-90 transition-opacity" variant="light" />
-        </button>
+        {/* Brand / Logo + Mobile Hamburger */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            onClick={onToggleMobileSidebar}
+            className="md:hidden p-1.5 -ml-1 rtl:-ml-0 rtl:-mr-1 rounded-lg text-[#26231F] hover:bg-[#F7F5F1] border border-[#EAE5DE] cursor-pointer"
+            aria-label="Toggle mobile menu"
+            title={isAr ? "فتح القائمة" : "Open Menu"}
+          >
+            <Menu className="w-5 h-5" />
+          </button>
 
-        {/* Global Search Bar (Light Theme) */}
+          <button
+            onClick={onOpenLanding}
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer group focus:outline-hidden text-left rtl:text-right"
+            title={isAr ? "العودة إلى الصفحة الرئيسية للموقع" : "Return to Home Page"}
+          >
+            <RealEstateIconBox className="w-7 h-7 sm:w-8 sm:h-8" />
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1 leading-none">
+                <span className="text-[15px] sm:text-[16px] font-black tracking-wider text-[#26231F] leading-none">
+                  IRAM
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00F5D4] animate-pulse"></span>
+              </div>
+              <span className="text-[7.5px] sm:text-[8px] font-bold tracking-[0.2em] text-[#E85312] uppercase leading-tight mt-0.5">
+                CONTECH SYSTEMS
+              </span>
+            </div>
+          </button>
+        </div>
+
+        {/* Global Search Bar (Warm Theme) */}
         <div className="flex-1 max-w-md hidden md:block">
           <div className="relative">
-            <Search className="w-4 h-4 text-[#64748B] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#6E6862] absolute left-3 top-1/2 -translate-y-1/2" />
             <input 
               type="text"
               placeholder={isAr ? "بحث عن مادة، كود مشروع، إذن استلام، أو تنبيه فائض..." : "Search materials, SKU, project codes, RFQs..."}
-              className="w-full pl-9 pr-4 py-2 text-xs bg-[#EEF2F6] text-[#0F172A] placeholder-[#64748B] border border-[#CBD5E1] rounded-lg focus:outline-hidden focus:border-[#E85312] focus:ring-1 focus:ring-[#E85312] transition-all font-medium"
+              className="w-full pl-9 pr-4 py-2 text-xs bg-[#F7F5F1] text-[#26231F] placeholder-[#6E6862] border border-[#EAE5DE] rounded-lg focus:outline-hidden focus:border-[#E85312] focus:ring-1 focus:ring-[#E85312] transition-all font-medium"
             />
           </div>
         </div>
@@ -103,20 +129,20 @@ export default function Navbar({
           {/* AI Assistant Quick Trigger */}
           <button 
             onClick={onOpenAssistant}
-            className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg bg-[#E85312] hover:bg-[#CC490F] text-white shadow-xs transition-all"
+            className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-[#E85312] to-[#FF6B2B] hover:from-[#CC4509] hover:to-[#E85312] text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all cursor-pointer group"
             title="Ask IRAM AI Assistant"
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5 text-amber-200 group-hover:rotate-12 transition-transform animate-soft-pulse" />
             <span className="hidden sm:inline">{isAr ? "مساعد الـ AI" : "AI Assistant"}</span>
           </button>
 
           {/* Language Toggle */}
           <button 
             onClick={onLanguageToggle}
-            className="p-2 text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9] rounded-lg transition-colors flex items-center gap-1 text-xs font-medium"
+            className="px-2.5 py-1.5 text-[#6E6862] hover:text-[#26231F] hover:bg-[#EAE5DE]/40 border border-[#EAE5DE] rounded-lg transition-all hover:-translate-y-0.5 active:scale-95 flex items-center gap-1.5 text-xs font-bold cursor-pointer"
             title="Toggle Language"
           >
-            <Globe className="w-4 h-4 text-[#64748B]" />
+            <Globe className="w-3.5 h-3.5 text-[#E85312]" />
             <span className="uppercase text-[11px] font-bold">{language}</span>
           </button>
 
@@ -124,19 +150,19 @@ export default function Navbar({
           <div className="relative">
             <button 
               onClick={() => setNotificationsOpen(!notificationsOpen)}
-              className="p-2 text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9] rounded-lg transition-colors relative"
+              className="p-2 text-[#6E6862] hover:text-[#26231F] hover:bg-[#F7F5F1] border border-[#EAE5DE] rounded-md transition-colors relative cursor-pointer"
             >
               <Bell className="w-4 h-4" />
               {unreadAlertsCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-[#E85312] rounded-full ring-2 ring-white"></span>
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#E85312] rounded-full ring-2 ring-white"></span>
               )}
             </button>
 
             {/* Notifications Dropdown */}
             {notificationsOpen && (
-              <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-dropdown border border-[#E2E8F0] p-3 z-50 animate-in fade-in zoom-in-95 duration-150">
-                <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0]">
-                  <h4 className="text-xs font-bold text-[#0F172A]">
+              <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-xl border border-[#EAE5DE] p-3 z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div className="flex items-center justify-between pb-2 border-b border-[#EAE5DE]">
+                  <h4 className="text-xs font-bold text-[#26231F]">
                     {isAr ? "التنبيهات والإشعارات" : "System Alerts & Notifications"}
                   </h4>
                   <span className="text-[11px] text-[#E85312] font-semibold cursor-pointer">

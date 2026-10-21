@@ -3,8 +3,19 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --o: #E85312;
+    --iv: #FFFDF9;
+    --w: #ffffff;
+    --pe: #FEECE5;
+    --c: #26231F;
+    --m: #6E6862;
+    --b: #EAE5DE;
+    --n: #F7F5F1;
+  }
+
   body {
-    @apply bg-[#EEF2F6] text-[#0F172A] antialiased selection:bg-[#E85312] selection:text-white;
+    @apply bg-[#FFFDF9] text-[#26231F] antialiased selection:bg-[#E85312] selection:text-white;
   }
 
   /* Automatic font-family and typography rhythm based on document direction */
@@ -150,5 +161,67 @@
   background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-6px) scale(1.01); }
+}
+
+@keyframes beaconPing {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(232, 83, 18, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(232, 83, 18, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(232, 83, 18, 0); }
+}
+
+@keyframes goldShine {
+  0% { filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.3)); }
+  50% { filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7)); }
+  100% { filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.3)); }
+}
+
+.animate-float-bob {
+  animation: floatBob 4s infinite ease-in-out;
+}
+
+.animate-beacon {
+  animation: beaconPing 2s infinite ease-in-out;
+}
+
+.animate-gold-shine {
+  animation: goldShine 3.5s infinite ease-in-out;
+}
+
+.animated-gradient-border {
+  background: linear-gradient(60deg, #E85312, #D4AF37, #E85312);
+  background-size: 300% 300%;
+  animation: gradientFlow 5s ease infinite;
+}
+
+/* Micro-interaction interactive card utilities */
+.card-hover-lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+.card-hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(38, 35, 31, 0.08), 0 4px 12px rgba(38, 35, 31, 0.03);
+}
+
+.btn-tactile {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-tactile:active {
+  transform: scale(0.96);
+}
+
+/* Mobile Safe Areas for Modern Smartphones (iPhone Home Indicator, Android Nav Bar) */
+.safe-bottom {
+  padding-bottom: max(0.4rem, env(safe-area-inset-bottom));
 }
 

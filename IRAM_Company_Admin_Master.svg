@@ -1,0 +1,238 @@
+<svg id="diagramSvg" width="1440" height="1060" viewBox="0 0 1440 1060" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Roboto, 'Cairo', sans-serif">
+  <defs>
+    <!-- Arrowhead for <<include>> and <<extend>> -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- White Canvas Background -->
+  <rect id="svgCanvasBg" width="1440" height="1060" fill="#ffffff" />
+
+  <!-- ================= SYSTEM BOUNDARY ================= -->
+  <rect id="svgSysBoundary" x="250" y="30" width="830" height="1000" rx="18" fill="#f8fafc" stroke="#0284c7" stroke-width="2.5" />
+  
+  <!-- Platform Header -->
+  <text id="svgTitle" x="665" y="66" text-anchor="middle" font-size="22" font-weight="900" fill="#0f172a" letter-spacing="0.5">IRAM Platform — System Boundary</text>
+  <text id="svgSubtitle" x="665" y="90" text-anchor="middle" font-size="14.5" font-weight="700" fill="#0284c7">Company Admin Use Case Diagram (Corporate Governance, Multi-Project &amp; Warehouse Control)</text>
+
+
+  <!-- ================= GROUP 1: Company Profile, Settings & Workforce RBAC ================= -->
+  <rect x="270" y="105" width="790" height="260" rx="12" fill="#f0f9ff" stroke="#38bdf8" stroke-width="1.8" />
+  <text x="290" y="129" font-size="13" font-weight="800" fill="#0369a1">1. Company Profile, Governance &amp; Workforce RBAC</text>
+
+  <!-- Main UC: Manage Company Profile -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="165" rx="120" ry="22" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.8"/>
+    <text x="430" y="170" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">Manage Company Profile</text>
+  </g>
+
+  <!-- Main UC: Invite & Manage Employees -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="220" rx="125" ry="23" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.8"/>
+    <text x="430" y="225" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">Invite &amp; Manage Employees</text>
+  </g>
+
+  <!-- Main UC: Manage Company Settings -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="275" rx="125" ry="22" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.2"/>
+    <text x="430" y="280" text-anchor="middle" font-size="11.5" font-weight="800" fill="#0369a1">Manage Company Settings</text>
+  </g>
+
+  <!-- Main UC: View Audit Log -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="330" rx="120" ry="22" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.2"/>
+    <text x="430" y="335" text-anchor="middle" font-size="11.5" font-weight="800" fill="#0369a1">View Audit Log</text>
+  </g>
+
+  <!-- Sub UC: Assign Roles & Permissions (Included) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="205" rx="130" ry="21" fill="#ffffff" stroke="#0284c7" stroke-width="1.6"/>
+    <text x="830" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">Assign Roles &amp; Permissions</text>
+  </g>
+
+  <!-- Sub UC: Set Project-Level Scopes (Included) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="245" rx="130" ry="21" fill="#ffffff" stroke="#0284c7" stroke-width="1.6"/>
+    <text x="830" y="250" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">Set Project-Level Scopes</text>
+  </g>
+
+  <!-- Include Arrows from Manage Employees -->
+  <line x1="555" y1="215" x2="695" y2="207" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <line x1="555" y1="225" x2="695" y2="243" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="212" text-anchor="middle" font-size="9.5" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+
+  <!-- ================= GROUP 2: Multi-Site Projects, Warehouses & Materials Catalog ================= -->
+  <rect x="270" y="380" width="790" height="230" rx="12" fill="#f0fdf4" stroke="#4ade80" stroke-width="1.8" />
+  <text x="290" y="404" font-size="13" font-weight="800" fill="#15803d">2. Multi-Site Projects, Warehouses &amp; Materials Catalog</text>
+
+  <!-- Main UC: Create and Manage Projects -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="445" rx="125" ry="22" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
+    <text x="430" y="450" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">Create and Manage Projects</text>
+  </g>
+
+  <!-- Main UC: Manage Warehouses -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="505" rx="125" ry="23" fill="#dcfce7" stroke="#16a34a" stroke-width="2.2"/>
+    <text x="430" y="510" text-anchor="middle" font-size="12" font-weight="800" fill="#15803d">Manage Warehouses</text>
+  </g>
+
+  <!-- Main UC: Manage Materials Catalog -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="565" rx="125" ry="22" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
+    <text x="430" y="570" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">Manage Materials Catalog</text>
+  </g>
+
+  <!-- Sub UC: View Projects Overview (Included) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="425" rx="130" ry="21" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+    <text x="830" y="430" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">View Projects Overview</text>
+  </g>
+
+  <!-- Sub UC: Assign Project PMs & Engineers (Included) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="465" rx="130" ry="21" fill="#ffffff" stroke="#16a34a" stroke-width="1.6"/>
+    <text x="830" y="470" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">Assign Project PMs &amp; Engineers</text>
+  </g>
+
+  <!-- Sub UC: Monitor Site Staging Yards (Included) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="565" rx="130" ry="21" fill="#ffffff" stroke="#16a34a" stroke-width="1.6"/>
+    <text x="830" y="570" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">Monitor Site Staging Yards</text>
+  </g>
+
+  <!-- Include Arrows -->
+  <line x1="555" y1="440" x2="695" y2="427" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <line x1="555" y1="450" x2="695" y2="463" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <line x1="555" y1="565" x2="695" y2="565" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="432" text-anchor="middle" font-size="9.5" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+
+  <!-- ================= GROUP 3: Unified Visibility & AI Intelligence ================= -->
+  <rect x="270" y="625" width="790" height="210" rx="12" fill="#faf5ff" stroke="#c084fc" stroke-width="1.8" />
+  <text x="290" y="649" font-size="13" font-weight="800" fill="#7e22ce">3. Unified Visibility &amp; AI Intelligence</text>
+
+  <!-- Main UC: View Company-wide Dashboard & Reports -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="690" rx="135" ry="23" fill="#f3e8ff" stroke="#9333ea" stroke-width="2.2"/>
+    <text x="430" y="694" text-anchor="middle" font-size="11.5" font-weight="800" fill="#581c87">View Company-wide Dashboard &amp; Reports</text>
+  </g>
+
+  <!-- Main UC: Use Construction Assistant (AI) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="770" rx="130" ry="23" fill="#fdf4ff" stroke="#c026d3" stroke-width="2.2"/>
+    <text x="430" y="774" text-anchor="middle" font-size="11.5" font-weight="800" fill="#86198f">Use Construction Assistant (AI)</text>
+  </g>
+
+  <!-- Sub UCs (Included) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="665" rx="130" ry="21" fill="#ffffff" stroke="#9333ea" stroke-width="1.6"/>
+    <text x="830" y="670" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">View Unified Material Visibility</text>
+  </g>
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="710" rx="130" ry="21" fill="#e8e0f3" stroke="#7a6a99" stroke-width="1.8"/>
+    <text x="830" y="715" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4a154b">Predictive Shortage &amp; Waste Alerts</text>
+  </g>
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="755" rx="130" ry="21" fill="#ffffff" stroke="#9333ea" stroke-width="1.6"/>
+    <text x="830" y="760" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0f172a">Monitor Spending &amp; Performance</text>
+  </g>
+
+  <line x1="565" y1="685" x2="695" y2="670" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <line x1="565" y1="695" x2="695" y2="708" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+
+  <!-- ================= GROUP 4: Governance, Surplus Reallocation & Approvals ================= -->
+  <rect x="270" y="850" width="790" height="160" rx="12" fill="#fff7ed" stroke="#fb923c" stroke-width="1.8" />
+  <text x="290" y="874" font-size="13" font-weight="800" fill="#c2410c">4. Governance, Surplus Reallocation &amp; Approvals</text>
+
+  <!-- Main UC: Configure Approval Policies -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="905" rx="125" ry="22" fill="#ffedd5" stroke="#ea580c" stroke-width="1.8"/>
+    <text x="430" y="910" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">Configure Approval Policies</text>
+  </g>
+
+  <!-- Main UC: Approve Purchases & Transfers -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="960" rx="125" ry="22" fill="#ffedd5" stroke="#ea580c" stroke-width="2.2"/>
+    <text x="430" y="965" text-anchor="middle" font-size="11.5" font-weight="800" fill="#c2410c">Approve Purchases &amp; Transfers</text>
+  </g>
+
+  <!-- Sub UCs -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="925" rx="135" ry="21" fill="#ffffff" stroke="#ea580c" stroke-width="1.6"/>
+    <text x="830" y="930" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">Review Inter-Site Surplus Reallocation</text>
+  </g>
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="970" rx="120" ry="21" fill="#ffffff" stroke="#ea580c" stroke-width="1.6"/>
+    <text x="830" y="975" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">Reject with Justification</text>
+  </g>
+
+  <!-- Include Arrow -->
+  <line x1="555" y1="955" x2="695" y2="930" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="635" y="940" text-anchor="middle" font-size="9.5" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+  <!-- Extend Arrow -->
+  <line x1="705" y1="970" x2="560" y2="965" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="645" y="964" text-anchor="middle" font-size="9.5" font-weight="700" fill="#334155">&lt;&lt;extend&gt;&gt;</text>
+
+
+  <!-- ================= ACTOR: Company Admin (Left) ================= -->
+  <g id="actorStickAdmin">
+    <circle cx="105" cy="520" r="16" fill="none" stroke="#0284c7" stroke-width="3"/>
+    <line x1="105" y1="536" x2="105" y2="580" stroke="#0284c7" stroke-width="3"/>
+    <line x1="80" y1="555" x2="130" y2="555" stroke="#0284c7" stroke-width="3"/>
+    <line x1="105" y1="580" x2="85" y2="620" stroke="#0284c7" stroke-width="3"/>
+    <line x1="105" y1="580" x2="125" y2="620" stroke="#0284c7" stroke-width="3"/>
+    <text x="105" y="645" text-anchor="middle" font-size="14" font-weight="900" fill="#0f172a">Company Admin</text>
+  </g>
+
+  <!-- Direct Association Lines to Left Primary UCs -->
+  <!-- Group 1 -->
+  <line x1="135" y1="510" x2="310" y2="165" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="515" x2="305" y2="220" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="520" x2="305" y2="275" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="525" x2="310" y2="330" stroke="#64748b" stroke-width="1.8"/>
+
+  <!-- Group 2 -->
+  <line x1="135" y1="535" x2="305" y2="445" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="540" x2="305" y2="505" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="545" x2="305" y2="565" stroke="#64748b" stroke-width="1.8"/>
+
+  <!-- Group 3 -->
+  <line x1="135" y1="555" x2="295" y2="690" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="560" x2="300" y2="770" stroke="#64748b" stroke-width="1.8"/>
+
+  <!-- Group 4 -->
+  <line x1="130" y1="570" x2="305" y2="905" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="130" y1="575" x2="305" y2="960" stroke="#64748b" stroke-width="1.8"/>
+
+
+  <!-- ================= RIGHT PANEL: LEGEND ================= -->
+  <rect id="legendBox" x="1100" y="30" width="310" height="300" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+  <text id="legendTitle" x="1120" y="58" font-size="14" font-weight="900" fill="#0f172a">Legend (دليل الرسم)</text>
+
+  <circle cx="1135" cy="85" r="7" fill="none" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1135" y1="92" x2="1135" y2="108" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1125" y1="98" x2="1145" y2="98" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1135" y1="108" x2="1128" y2="118" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1135" y1="108" x2="1142" y2="118" stroke="#0284c7" stroke-width="2"/>
+  <text id="legendT1" x="1170" y="103" font-size="12" font-weight="700" fill="#334155">Actor (مسؤول الشركة)</text>
+
+  <ellipse cx="1135" cy="140" rx="22" ry="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text id="legendT2" x="1170" y="144" font-size="12" font-weight="700" fill="#334155">Primary Use Case (أساسي)</text>
+
+  <ellipse cx="1135" cy="175" rx="22" ry="12" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <text id="legendT3" x="1170" y="179" font-size="12" font-weight="700" fill="#334155">Included / Extended UC (فرعي)</text>
+
+  <ellipse cx="1135" cy="210" rx="22" ry="12" fill="#e8e0f3" stroke="#7a6a99" stroke-width="1.8"/>
+  <text id="legendT4" x="1170" y="214" font-size="12" font-weight="700" fill="#334155">AI Assistant / Prediction</text>
+
+  <line x1="1115" y1="245" x2="1155" y2="245" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="1170" y="249" font-size="12" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt; / &lt;&lt;extend&gt;&gt;</text>
+</svg>

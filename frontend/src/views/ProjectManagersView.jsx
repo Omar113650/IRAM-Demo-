@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Building, 
+  Building2,
   AlertTriangle, 
   CheckCircle2, 
   ArrowRightLeft, 
@@ -17,8 +18,11 @@ import {
   Filter,
   FileText,
   Users,
+  UserPlus,
   CheckCircle,
   ChevronRight,
+  ChevronDown,
+  Check,
   Download,
   Share2,
   LayoutGrid,
@@ -41,7 +45,7 @@ export default function ProjectManagersView({
 }) {
   const isAr = language === 'ar';
 
-  // Sub-view: 'dashboard' (Figma Screen 1) | 'projects' (Figma Screen 2 & 3) | 'detail' (Deep BOQ & Shortage View)
+  // Sub-view: 'dashboard' (Figma Screen 1) | 'projects' (Figma Screen 2 & 3) | 'team' (Users & Team) | 'detail' (Deep BOQ & Shortage View)
   const [currentViewMode, setCurrentViewMode] = useState('dashboard');
   
   // Projects display mode: 'table' (Figma Screen 2) | 'grid' (Figma Screen 3)
@@ -65,6 +69,117 @@ export default function ProjectManagersView({
   const [reqPriority, setReqPriority] = useState('Urgent');
   const [reqDate, setReqDate] = useState('2026-10-28');
   const [requestSubmittedSuccess, setRequestSubmittedSuccess] = useState(null);
+
+  // Users & Team states matching Figma Screen 2 & Screen 3 ("دول بردوا عند البروجيكن مانجر")
+  const [teamViewMode, setTeamViewMode] = useState('populated'); // 'populated' (Screen 3) | 'initial' (Screen 2)
+  const [teamSearch, setTeamSearch] = useState('');
+  const [teamRoleFilter, setTeamRoleFilter] = useState('ALL');
+  const [teamStatusFilter, setTeamStatusFilter] = useState('ALL');
+  const [openProjectPopoverUserId, setOpenProjectPopoverUserId] = useState(null);
+  const [showInviteUserModal, setShowInviteUserModal] = useState(false);
+  const [teamToast, setTeamToast] = useState(null);
+
+  // Invite modal form state
+  const [inviteName, setInviteName] = useState('');
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteRole, setInviteRole] = useState('Site Engineer');
+  const [inviteProjects, setInviteProjects] = useState(['PRJ-001']);
+
+  const [teamUsers, setTeamUsers] = useState([
+    {
+      id: "USR-001",
+      name: "Eng. Eman El-Sayed",
+      nameAr: "م. إيمان السيد",
+      email: "eman@iram-platform.com",
+      role: "Project Manager",
+      roleAr: "مدير المشروع",
+      status: "Active",
+      statusAr: "نشط",
+      assignedProjects: ["PRJ-001", "PRJ-005"],
+      initials: "EE"
+    },
+    {
+      id: "USR-002",
+      name: "Eng. Mohamed Fathy",
+      nameAr: "م. محمد فتحي",
+      email: "m.fathy@iram-platform.com",
+      role: "Site Engineer",
+      roleAr: "مهندس موقع",
+      status: "Active",
+      statusAr: "نشط",
+      assignedProjects: ["PRJ-001"],
+      initials: "MF"
+    },
+    {
+      id: "USR-003",
+      name: "Eng. Rami Fawzy",
+      nameAr: "م. رامي فوزي",
+      email: "rami.fawzy@iram-platform.com",
+      role: "Site Engineer",
+      roleAr: "مهندس موقع",
+      status: "Active",
+      statusAr: "نشط",
+      assignedProjects: ["PRJ-002"],
+      initials: "RF"
+    },
+    {
+      id: "USR-004",
+      name: "Ahmed Hassan",
+      nameAr: "أحمد حسن",
+      email: "a.hassan@iram-platform.com",
+      role: "Procurement Officer",
+      roleAr: "مسؤول مشتريات وتوريد",
+      status: "Active",
+      statusAr: "نشط",
+      assignedProjects: ["PRJ-001", "PRJ-002", "PRJ-003", "PRJ-004", "PRJ-005", "PRJ-006"],
+      initials: "AH"
+    },
+    {
+      id: "USR-005",
+      name: "Mahmoud Eid",
+      nameAr: "محمود عيد",
+      email: "m.eid@iram-platform.com",
+      role: "Warehouse Officer",
+      roleAr: "أمين مخزن وتشوينات",
+      status: "Pending Invitation",
+      statusAr: "في انتظار قبول الدعوة",
+      assignedProjects: ["PRJ-001", "PRJ-005"],
+      initials: "ME"
+    }
+  ]);
+
+  const handleToggleUserProject = (userId, projId) => {
+    setTeamUsers(prev => prev.map(u => {
+      if (u.id !== userId) return u;
+      const exists = u.assignedProjects.includes(projId);
+      const nextProjects = exists 
+        ? u.assignedProjects.filter(p => p !== projId)
+        : [...u.assignedProjects, projId];
+      return { ...u, assignedProjects: nextProjects };
+    }));
+  };
+
+  const handleInviteUserSubmit = (e) => {
+    e.preventDefault();
+    const newUser = {
+      id: `USR-${String(teamUsers.length + 1).padStart(3, '0')}`,
+      name: inviteName,
+      nameAr: inviteName,
+      email: inviteEmail,
+      role: inviteRole,
+      roleAr: inviteRole,
+      status: "Pending Invitation",
+      statusAr: "في انتظار قبول الدعوة",
+      assignedProjects: inviteProjects.length > 0 ? inviteProjects : ["PRJ-001"],
+      initials: inviteName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || "TU"
+    };
+    setTeamUsers(prev => [...prev, newUser]);
+    setShowInviteUserModal(false);
+    setInviteName('');
+    setInviteEmail('');
+    setTeamToast(isAr ? `تم إرسال دعوة بنجاح إلى ${newUser.name}` : `Invitation sent successfully to ${newUser.name}`);
+    setTimeout(() => setTeamToast(null), 4000);
+  };
 
   // 6 Projects matching Figma "new project manager"
   const [projectsList, setProjectsList] = useState([
@@ -402,13 +517,14 @@ export default function ProjectManagersView({
             <h1 className="text-xl sm:text-2xl font-black text-[#0F172A] mt-0.5">
               {currentViewMode === 'dashboard' && (isAr ? "لوحة القيادة الميدانية للمشاريع" : "Project Manager Overview")}
               {currentViewMode === 'projects' && (isAr ? "مشاريعي المخصصة (My Projects)" : "My Assigned Projects")}
+              {currentViewMode === 'team' && (isAr ? "فريق العمل والمستخدمين (Users & Team)" : "Users & Team")}
               {currentViewMode === 'detail' && (isAr ? `مشروع: ${currentProj.nameAr}` : `Project: ${currentProj.name}`)}
             </h1>
           </div>
         </div>
 
         {/* View Switcher Pills matching Figma Screen 1, 2, 3 */}
-        <div className="flex items-center gap-1.5 bg-[#EEF2F6] p-1.5 rounded-xl border border-[#CBD5E1] text-xs font-bold">
+        <div className="flex items-center gap-1.5 bg-[#EEF2F6] p-1.5 rounded-xl border border-[#CBD5E1] text-xs font-bold overflow-x-auto whitespace-nowrap">
           <button
             onClick={() => setCurrentViewMode('dashboard')}
             className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -431,6 +547,18 @@ export default function ProjectManagersView({
           >
             <Building className="w-3.5 h-3.5 text-[#E85312]" />
             <span>{isAr ? "قائمة المشاريع (My Projects)" : "My Projects"}</span>
+          </button>
+
+          <button
+            onClick={() => setCurrentViewMode('team')}
+            className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+              currentViewMode === 'team'
+                ? 'bg-white text-[#E85312] shadow-xs font-black'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Users className="w-3.5 h-3.5 text-[#E85312]" />
+            <span>{isAr ? "فريق العمل (Users & Team)" : "Users & Team"}</span>
           </button>
 
           {currentViewMode === 'detail' && (
@@ -939,8 +1067,384 @@ export default function ProjectManagersView({
       )}
 
       {/* ============================================================== */}
-      {/* 4. DEEP PROJECT DETAIL VIEW (BOQ & Material Shortages) */}
+      {/* 3. SCREEN: USERS & TEAM (Figma Screen 2 & 3 - media_1792615423079_ae540f75) */}
       {/* ============================================================== */}
+      {currentViewMode === 'team' && (
+        <div className="space-y-6 animate-in fade-in duration-200">
+          
+          {/* Toast Notification */}
+          {teamToast && (
+            <div className="p-4 bg-emerald-600 text-white rounded-2xl shadow-xl text-xs font-bold flex items-center justify-between animate-in fade-in">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4" />
+                <span>{teamToast}</span>
+              </div>
+              <button onClick={() => setTeamToast(null)}>✕</button>
+            </div>
+          )}
+
+          {/* Sub-header & Figma Demo State Toggle */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl font-black text-slate-900">
+                  {isAr ? "فريق العمل وتعيين صلاحيات المشاريع (Users & Team)" : "Users & Project Team Management"}
+                </h2>
+                <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-orange-50 text-[#E85312] font-bold border border-orange-200">
+                  Figma Layout
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mt-1 max-w-2xl leading-relaxed">
+                {isAr 
+                  ? "إدارة مهندسي الموقع، مسؤولي التوريد، وأمناء المخازن المسندين لمشاريعك، مع إمكانية تعديل المشاريع المسندة عبر القائمة التفاعلية."
+                  : "Manage site engineers, procurement officers, and warehouse staff assigned to projects with interactive assignment popovers."}
+              </p>
+            </div>
+
+            {/* Demo State Switcher */}
+            <div className="flex flex-wrap items-center gap-2.5">
+              <div className="inline-flex rounded-xl bg-slate-100 p-1 border border-slate-200 text-xs font-bold">
+                <button
+                  onClick={() => setTeamViewMode('populated')}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    teamViewMode === 'populated'
+                      ? 'bg-[#E85312] text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                  title={isAr ? "عرض الجدول المكتمل مع القائمة المنسدلة للمشاريع" : "Populated Table & Popover"}
+                >
+                  {isAr ? "الجدول المكتمل (Screen 3)" : "Populated (Screen 3)"}
+                </button>
+                <button
+                  onClick={() => setTeamViewMode('initial')}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    teamViewMode === 'initial'
+                      ? 'bg-[#E85312] text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                  title={isAr ? "عرض الحالة الأولية مع كارت إرشادات الدعوة" : "Initial State & Guide"}
+                >
+                  {isAr ? "الحالة الأولية (Screen 2)" : "Initial (Screen 2)"}
+                </button>
+              </div>
+
+              <button
+                onClick={() => setShowInviteUserModal(true)}
+                className="px-3.5 py-2 rounded-lg bg-[#E85312] hover:bg-[#CC490F] text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+              >
+                <UserPlus className="w-3.5 h-3.5" />
+                <span>{isAr ? "+ دعوة عضو جديد" : "+ Invite Member"}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 3 KPI Metric Cards matching Figma Screen 2 & 3 */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
+                {isAr ? "إجمالي المستخدمين" : "TOTAL USERS"}
+              </span>
+              <div className="text-2xl font-black text-slate-900 mt-2">
+                {teamViewMode === 'initial' ? 1 : teamUsers.length}
+              </div>
+              <span className="text-[11px] text-slate-400 mt-1 block">
+                {isAr ? "الأعضاء المسجلين في النظام" : "Registered workspace members"}
+              </span>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
+                {isAr ? "المستخدمون النشطون" : "ACTIVE USERS"}
+              </span>
+              <div className="text-2xl font-black text-emerald-600 mt-2">
+                {teamViewMode === 'initial' ? 1 : teamUsers.filter(u => u.status === 'Active').length}
+              </div>
+              <span className="text-[11px] text-emerald-600/80 mt-1 block">
+                {isAr ? "صلاحيات مفعلة وجاهزون للمهام" : "Active operational access"}
+              </span>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
+                {isAr ? "دعوات معلقة" : "PENDING INVITATIONS"}
+              </span>
+              <div className="text-2xl font-black text-amber-500 mt-2">
+                {teamViewMode === 'initial' ? 0 : teamUsers.filter(u => u.status === 'Pending Invitation').length}
+              </div>
+              <span className="text-[11px] text-amber-600/80 mt-1 block">
+                {isAr ? "بانتظار قبول الدعوة" : "Awaiting invite confirmation"}
+              </span>
+            </div>
+          </div>
+
+          {/* Table Container with Filter Bar */}
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-visible">
+            
+            {/* Filter Bar */}
+            <div className="p-4 sm:p-5 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Search */}
+                <div className="relative w-full sm:w-64">
+                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 rtl:left-auto rtl:right-3" />
+                  <input
+                    type="text"
+                    value={teamSearch}
+                    onChange={(e) => setTeamSearch(e.target.value)}
+                    placeholder={isAr ? "بحث بالاسم أو البريد..." : "Search users by name, email..."}
+                    className="w-full pl-9 pr-3 rtl:pl-3 rtl:pr-9 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#E85312] transition-all"
+                  />
+                </div>
+
+                {/* Role Filter */}
+                <select
+                  value={teamRoleFilter}
+                  onChange={(e) => setTeamRoleFilter(e.target.value)}
+                  className="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-bold"
+                >
+                  <option value="ALL">{isAr ? "جميع الأدوار" : "All Roles"}</option>
+                  <option value="Project Manager">Project Manager</option>
+                  <option value="Site Engineer">Site Engineer</option>
+                  <option value="Procurement Officer">Procurement Officer</option>
+                  <option value="Warehouse Officer">Warehouse Officer</option>
+                </select>
+
+                {/* Status Filter */}
+                <select
+                  value={teamStatusFilter}
+                  onChange={(e) => setTeamStatusFilter(e.target.value)}
+                  className="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-bold"
+                >
+                  <option value="ALL">{isAr ? "جميع الحالات" : "All Status"}</option>
+                  <option value="Active">{isAr ? "نشط" : "Active"}</option>
+                  <option value="Pending Invitation">{isAr ? "قيد الانتظار" : "Pending"}</option>
+                </select>
+              </div>
+
+              <div className="text-xs text-slate-400 font-medium">
+                {isAr ? `عرض ${teamViewMode === 'initial' ? 1 : teamUsers.length} من الأعضاء` : `Showing ${teamViewMode === 'initial' ? 1 : teamUsers.length} members`}
+              </div>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto overflow-y-visible">
+              <table className="w-full text-left rtl:text-right text-xs">
+                <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase tracking-wider text-[11px]">
+                  <tr>
+                    <th className="px-5 py-3.5">{isAr ? "المستخدم والبريد" : "USER & EMAIL"}</th>
+                    <th className="px-4 py-3.5">{isAr ? "الدور والصلاحية" : "ROLE"}</th>
+                    <th className="px-4 py-3.5">{isAr ? "المشاريع المسندة" : "ASSIGNED PROJECTS"}</th>
+                    <th className="px-4 py-3.5">{isAr ? "الحالة" : "STATUS"}</th>
+                    <th className="px-4 py-3.5 text-right rtl:text-left">{isAr ? "الإجراء" : "ACTIONS"}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 font-medium text-slate-800">
+                  {(teamViewMode === 'initial' ? teamUsers.slice(0, 1) : teamUsers)
+                    .filter(u => {
+                      const matchSearch = !teamSearch || 
+                        u.name.toLowerCase().includes(teamSearch.toLowerCase()) ||
+                        u.nameAr.toLowerCase().includes(teamSearch.toLowerCase()) ||
+                        u.email.toLowerCase().includes(teamSearch.toLowerCase());
+                      const matchRole = teamRoleFilter === 'ALL' || u.role === teamRoleFilter;
+                      const matchStatus = teamStatusFilter === 'ALL' || u.status === teamStatusFilter;
+                      return matchSearch && matchRole && matchStatus;
+                    })
+                    .map(u => {
+                      const isPopoverOpen = openProjectPopoverUserId === u.id;
+                      
+                      // Calculate label for assigned projects
+                      let assignedLabel = "No Projects";
+                      if (u.assignedProjects.length === projectsList.length) {
+                        assignedLabel = "All Projects";
+                      } else if (u.assignedProjects.length === 1) {
+                        const pr = projectsList.find(p => p.id === u.assignedProjects[0]);
+                        assignedLabel = pr ? (isAr ? pr.nameAr : pr.name) : "1 Project";
+                      } else if (u.assignedProjects.length > 1) {
+                        assignedLabel = `${u.assignedProjects.length} Projects`;
+                      }
+
+                      return (
+                        <tr key={u.id} className="hover:bg-slate-50/70 transition-colors">
+                          {/* User & Email */}
+                          <td className="px-5 py-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 rounded-full bg-[#E85312] text-white font-bold flex items-center justify-center text-xs shrink-0">
+                                {u.initials}
+                              </div>
+                              <div>
+                                <div className="font-bold text-slate-900 text-sm">
+                                  {isAr ? u.nameAr : u.name}
+                                </div>
+                                <div className="text-[11px] text-slate-400 font-mono">
+                                  {u.email}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* Role Badge */}
+                          <td className="px-4 py-4">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#E85312]"></span>
+                              <span>{isAr ? u.roleAr : u.role}</span>
+                            </span>
+                          </td>
+
+                          {/* Assigned Projects Popover (Figma Screen 3 Interactive Dropdown) */}
+                          <td className="px-4 py-4 relative">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenProjectPopoverUserId(isPopoverOpen ? null : u.id);
+                              }}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-[#E85312] bg-white text-slate-800 text-xs font-bold shadow-2xs hover:bg-orange-50/30 transition-all cursor-pointer"
+                            >
+                              <span className="max-w-[150px] truncate">{assignedLabel}</span>
+                              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isPopoverOpen ? 'rotate-180' : ''}`} />
+                            </button>
+
+                            {/* Interactive Popover Dropdown with Real-Time Checkboxes */}
+                            {isPopoverOpen && (
+                              <div 
+                                onClick={(e) => e.stopPropagation()}
+                                className="absolute z-50 top-full mt-1.5 left-4 rtl:left-auto rtl:right-4 w-72 bg-white rounded-xl shadow-xl border border-slate-200 p-3 space-y-2 animate-in fade-in"
+                              >
+                                <div className="text-[11px] font-bold text-slate-500 border-b border-slate-100 pb-1.5 flex items-center justify-between">
+                                  <span>{isAr ? "تعيين المشاريع لهذا العضو:" : "Assign Projects:"}</span>
+                                  <button
+                                    onClick={() => setOpenProjectPopoverUserId(null)}
+                                    className="text-slate-400 hover:text-slate-800 text-xs font-bold"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+
+                                <div className="space-y-1 max-h-48 overflow-y-auto">
+                                  {projectsList.map(proj => {
+                                    const isAssigned = u.assignedProjects.includes(proj.id);
+                                    return (
+                                      <label
+                                        key={proj.id}
+                                        className="flex items-center gap-2 p-1.5 hover:bg-slate-50 rounded-lg cursor-pointer text-xs transition-colors"
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={isAssigned}
+                                          onChange={() => handleToggleUserProject(u.id, proj.id)}
+                                          className="rounded text-[#E85312] focus:ring-[#E85312] cursor-pointer"
+                                        />
+                                        <span className={`truncate ${isAssigned ? 'font-bold text-slate-900' : 'text-slate-600'}`}>
+                                          {isAr ? proj.nameAr : proj.name}
+                                        </span>
+                                      </label>
+                                    );
+                                  })}
+                                </div>
+
+                                <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      // Assign all projects
+                                      setTeamUsers(prev => prev.map(user => user.id === u.id ? { ...user, assignedProjects: projectsList.map(p => p.id) } : user));
+                                    }}
+                                    className="text-[10px] text-[#E85312] font-bold hover:underline"
+                                  >
+                                    {isAr ? "تحديد الكل" : "Select All"}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setOpenProjectPopoverUserId(null)}
+                                    className="px-2.5 py-1 bg-slate-900 text-white rounded text-[10px] font-bold hover:bg-slate-800"
+                                  >
+                                    {isAr ? "تم" : "Done"}
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </td>
+
+                          {/* Status Badge */}
+                          <td className="px-4 py-4">
+                            {u.status === 'Active' ? (
+                              <span className="inline-flex items-center gap-1 text-emerald-700 font-bold text-xs">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                                <span>{isAr ? u.statusAr : u.status}</span>
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 text-amber-700 font-bold text-xs bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                                <Clock className="w-3.5 h-3.5 text-amber-600" />
+                                <span>{isAr ? u.statusAr : u.status}</span>
+                              </span>
+                            )}
+                          </td>
+
+                          {/* Actions */}
+                          <td className="px-4 py-4 text-right rtl:text-left">
+                            <button
+                              onClick={() => {
+                                setOpenProjectPopoverUserId(isPopoverOpen ? null : u.id);
+                              }}
+                              className="text-xs text-[#E85312] font-bold hover:underline cursor-pointer"
+                            >
+                              {isAr ? "تعديل الصلاحيات" : "Edit Role"}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Figma Screen 2: Empty State Guide (Invite your first team member) */}
+            {teamViewMode === 'initial' && (
+              <div className="p-8 bg-white border-t border-slate-100 text-center space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-[#FEECE5] text-[#E85312] flex items-center justify-center mx-auto">
+                  <UserPlus className="w-6 h-6" />
+                </div>
+                <div className="max-w-md mx-auto space-y-1.5">
+                  <h4 className="text-base font-black text-slate-900">
+                    {isAr ? "دعوة أول عضو في فريق العمل" : "Invite your first team member"}
+                  </h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    {isAr 
+                      ? "أنت العضو الوحيد في مساحة العمل حالياً. دعوة زملائك تمنح منصة إرم قوتها الحقيقية: توزيع الصلاحيات المناسبة لكل دور (مدير مشروع، مهندس موقع، مشتريات، مخازن) لضمان حوكمة التوريد والاستهلاك."
+                      : "You're the only member of your workspace. Inviting your teammates gives IRAM real power: create roles that match your team: supervisor, site, procurement, and warehouse. Responsibilities are set up from the start."}
+                  </p>
+                </div>
+
+                {/* 4 Role Badges */}
+                <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+                  <span className="px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold">
+                    Project Manager
+                  </span>
+                  <span className="px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold">
+                    Site Engineer
+                  </span>
+                  <span className="px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold">
+                    Procurement Officer
+                  </span>
+                  <span className="px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold">
+                    Warehouse Officer
+                  </span>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    onClick={() => setShowInviteUserModal(true)}
+                    className="px-5 py-2.5 bg-[#E85312] hover:bg-[#CC490F] text-white rounded-xl text-xs font-bold shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <UserPlus className="w-4 h-4" />
+                    <span>{isAr ? "دعوة عضو جديد" : "Invite User"}</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+        </div>
+      )}
       {currentViewMode === 'detail' && (
         <div className="space-y-6 animate-in fade-in duration-200">
           
@@ -1132,6 +1636,125 @@ export default function ProjectManagersView({
               >
                 {isAr ? "تأكيد الطلب والتحقق التلقائي من الفائض" : "Submit Requisition & Check Internal Surplus"}
               </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* INVITE TEAM MEMBER MODAL */}
+      {showInviteUserModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
+            <div className="p-5 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-orange-100 text-[#E85312] flex items-center justify-center font-bold">
+                  <UserPlus className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-slate-900 text-sm">
+                    {isAr ? "دعوة عضو جديد لفريق المشروع" : "Invite Team Member"}
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    {isAr ? "حدد الدور والمشاريع المسندة له في المنظومة" : "Assign project scope and permissions"}
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowInviteUserModal(false)}
+                className="text-slate-400 hover:text-slate-800 text-sm font-bold"
+              >✕</button>
+            </div>
+
+            <form onSubmit={handleInviteUserSubmit} className="p-6 space-y-4 text-xs">
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">
+                  {isAr ? "الاسم الكامل" : "Full Name"}
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder={isAr ? "م. سامح عبد المنعم" : "e.g. Eng. Sameh Abdelmonem"}
+                  value={inviteName}
+                  onChange={(e) => setInviteName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 font-bold focus:bg-white focus:border-[#E85312] transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">
+                  {isAr ? "البريد الإلكتروني للعمل" : "Work Email"}
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="s.abdelmonem@contracting.com"
+                  value={inviteEmail}
+                  onChange={(e) => setInviteEmail(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 font-mono focus:bg-white focus:border-[#E85312] transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">
+                  {isAr ? "الدور الوظيفي" : "Role"}
+                </label>
+                <select
+                  value={inviteRole}
+                  onChange={(e) => setInviteRole(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-bold text-slate-800"
+                >
+                  <option value="Site Engineer">{isAr ? "Site Engineer (مهندس موقع)" : "Site Engineer"}</option>
+                  <option value="Project Manager">{isAr ? "Project Manager (مدير مشروع)" : "Project Manager"}</option>
+                  <option value="Procurement Officer">{isAr ? "Procurement Officer (مسؤول مشتريات)" : "Procurement Officer"}</option>
+                  <option value="Warehouse Officer">{isAr ? "Warehouse Officer (أمين مخزن)" : "Warehouse Officer"}</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1.5">
+                  {isAr ? "المشاريع المسندة" : "Assign Projects"}
+                </label>
+                <div className="space-y-1.5 max-h-36 overflow-y-auto border border-slate-100 rounded-lg p-2 bg-slate-50/50">
+                  {projectsList.map(p => {
+                    const checked = inviteProjects.includes(p.id);
+                    return (
+                      <label key={p.id} className="flex items-center gap-2 text-[11px] text-slate-700 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => {
+                            if (checked) {
+                              setInviteProjects(inviteProjects.filter(id => id !== p.id));
+                            } else {
+                              setInviteProjects([...inviteProjects, p.id]);
+                            }
+                          }}
+                          className="rounded text-[#E85312] focus:ring-[#E85312]"
+                        />
+                        <span className={checked ? "font-bold text-slate-900" : ""}>
+                          {isAr ? p.nameAr : p.name}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowInviteUserModal(false)}
+                  className="px-4 py-2 border border-slate-300 rounded-xl text-slate-700 font-bold hover:bg-slate-50 transition-all cursor-pointer"
+                >
+                  {isAr ? "إلغاء" : "Cancel"}
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-[#E85312] hover:bg-[#CC490F] text-white rounded-xl font-bold shadow-xs transition-all cursor-pointer"
+                >
+                  {isAr ? "إرسال الدعوة الآن" : "Send Invitation"}
+                </button>
+              </div>
             </form>
           </div>
         </div>

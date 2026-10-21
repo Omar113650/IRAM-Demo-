@@ -1,0 +1,228 @@
+<svg id="diagramSvg" width="1440" height="1160" viewBox="0 0 1440 1160" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Roboto, 'Cairo', sans-serif">
+  <defs>
+    <!-- Arrowhead for <<include>> and <<extend>> -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- White Canvas Background -->
+  <rect id="svgCanvasBg" width="1440" height="1160" fill="#ffffff" />
+
+  <!-- ================= SYSTEM BOUNDARY ================= -->
+  <rect id="svgSysBoundary" x="250" y="30" width="830" height="1100" rx="18" fill="#f8fafc" stroke="#0284c7" stroke-width="2.5" />
+  
+  <!-- Platform Header -->
+  <text id="svgTitle" x="665" y="66" text-anchor="middle" font-size="22" font-weight="900" fill="#0f172a" letter-spacing="0.5">IRAM Platform — System Boundary</text>
+  <text id="svgSubtitle" x="665" y="90" text-anchor="middle" font-size="14.5" font-weight="700" fill="#0284c7">Project Manager Use Case Diagram (Full Merged Architecture + AI Assistant &amp; Waste Prediction)</text>
+
+
+  <!-- ================= GROUP 1: Project Monitoring & Material Requirements (BOQ) ================= -->
+  <rect x="270" y="105" width="790" height="185" rx="12" fill="#f0f9ff" stroke="#38bdf8" stroke-width="1.8" />
+  <text x="290" y="127" font-size="13" font-weight="800" fill="#0369a1">1. Project Monitoring &amp; Material Requirements (BOQ)</text>
+
+  <!-- Main UC: View Project Overview -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="165" rx="120" ry="23" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.8"/>
+    <text x="430" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">View Project Overview</text>
+  </g>
+
+  <!-- Main UC: Manage Material Requirements -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="235" rx="125" ry="23" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.8"/>
+    <text x="430" y="240" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">Manage Material Requirements</text>
+  </g>
+
+  <!-- Sub UC: View Project Material Requirements (Include) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="235" rx="135" ry="23" fill="#ffffff" stroke="#0284c7" stroke-width="1.6"/>
+    <text x="830" y="240" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">View Project Material Requirements</text>
+  </g>
+
+  <!-- Include Arrow -->
+  <line x1="555" y1="235" x2="695" y2="235" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="227" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+
+  <!-- ================= GROUP 2: Material Requests Governance & Status ================= -->
+  <rect x="270" y="300" width="790" height="185" rx="12" fill="#f0fdf4" stroke="#4ade80" stroke-width="1.8" />
+  <text x="290" y="322" font-size="13" font-weight="800" fill="#15803d">2. Material Requests Governance &amp; Status</text>
+
+  <!-- Main UC: View & Track Material Requests -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="355" rx="125" ry="23" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
+    <text x="430" y="360" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">View &amp; Track Material Requests</text>
+  </g>
+
+  <!-- Main UC: Approve / Reject Material Requests -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="425" rx="125" ry="23" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
+    <text x="430" y="430" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">Approve / Reject Material Requests</text>
+  </g>
+
+  <!-- Sub UC: View Project Material Status (Include) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="355" rx="130" ry="23" fill="#ffffff" stroke="#16a34a" stroke-width="1.6"/>
+    <text x="830" y="360" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">View Project Material Status</text>
+  </g>
+
+  <!-- Include Arrow -->
+  <line x1="555" y1="355" x2="700" y2="355" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="347" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+
+  <!-- ================= GROUP 3: Material Availability & Procurement Requests ================= -->
+  <rect x="270" y="495" width="790" height="195" rx="12" fill="#faf5ff" stroke="#c084fc" stroke-width="1.8" />
+  <text x="290" y="517" font-size="13" font-weight="800" fill="#7e22ce">3. Material Availability &amp; Procurement Requests</text>
+
+  <!-- Main UC: Check Material Availability -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="595" rx="125" ry="24" fill="#f3e8ff" stroke="#9333ea" stroke-width="2"/>
+    <text x="430" y="600" text-anchor="middle" font-size="12" font-weight="800" fill="#0284c7">Check Material Availability</text>
+  </g>
+
+  <!-- Sub UC: View Shortage Risks & AI Insights (AI Purple) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="555" rx="135" ry="22" fill="#e8e0f3" stroke="#7a6a99" stroke-width="1.8"/>
+    <text x="830" y="560" text-anchor="middle" font-size="11.5" font-weight="700" fill="#4a154b">View Shortage Risks &amp; AI Insights</text>
+  </g>
+
+  <!-- Sub UC: Create Procurement Requests -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="635" rx="135" ry="22" fill="#ffffff" stroke="#9333ea" stroke-width="1.6"/>
+    <text x="830" y="640" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">Create Procurement Requests</text>
+  </g>
+
+  <!-- Extend Arrows -->
+  <line x1="695" y1="565" x2="550" y2="585" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="568" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;extend&gt;&gt;</text>
+
+  <line x1="695" y1="625" x2="550" y2="605" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="622" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;extend&gt;&gt;</text>
+
+
+  <!-- ================= GROUP 4: Surplus Management, Transfers & Site Alerts ================= -->
+  <rect x="270" y="700" width="790" height="180" rx="12" fill="#fff7ed" stroke="#fb923c" stroke-width="1.8" />
+  <text x="290" y="722" font-size="13" font-weight="800" fill="#c2410c">4. Surplus Management, Transfers &amp; Site Alerts</text>
+
+  <!-- Main UC: View Notifications & Alerts -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="760" rx="120" ry="23" fill="#ffedd5" stroke="#ea580c" stroke-width="1.8"/>
+    <text x="430" y="765" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">View Notifications &amp; Alerts</text>
+  </g>
+
+  <!-- Main UC: Approve Internal Transfers -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="825" rx="125" ry="23" fill="#ffedd5" stroke="#ea580c" stroke-width="1.8"/>
+    <text x="430" y="830" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">Approve Internal Transfers</text>
+  </g>
+
+  <!-- Sub UC: Manage Project Surplus and Transfers -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="760" rx="135" ry="23" fill="#ffffff" stroke="#ea580c" stroke-width="1.6"/>
+    <text x="830" y="765" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">Manage Surplus &amp; Transfers</text>
+  </g>
+
+  <!-- Extend Arrow -->
+  <line x1="695" y1="760" x2="550" y2="760" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="752" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;extend&gt;&gt;</text>
+
+
+  <!-- ================= GROUP 5: Material Waste Control & AI Assistant (Chatbot) (NEW!) ================= -->
+  <rect x="270" y="890" width="790" height="225" rx="12" fill="#eef2ff" stroke="#6366f1" stroke-width="1.8" />
+  <text x="290" y="912" font-size="13" font-weight="800" fill="#4338ca">5. Material Waste Control &amp; AI Assistant (Chatbot)</text>
+
+  <!-- Main UC (Left 1): Monitor Material Consumption & Waste -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="955" rx="130" ry="23" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="430" y="960" text-anchor="middle" font-size="11.5" font-weight="800" fill="#312e81">Monitor Material Consumption &amp; Waste</text>
+  </g>
+
+  <!-- Main UC (Left 2 - Chatbot): Interact with AI Assistant (Chatbot) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="1045" rx="135" ry="24" fill="#fdf4ff" stroke="#c026d3" stroke-width="2.2"/>
+    <text x="430" y="1042" text-anchor="middle" font-size="12" font-weight="800" fill="#86198f">Interact with AI Assistant (Chatbot)</text>
+    <text x="430" y="1057" text-anchor="middle" font-size="9.5" font-weight="600" fill="#a21caf">(Conversational Query &amp; Recommendations)</text>
+  </g>
+
+  <!-- Sub UC (Right 1 - AI Prediction): Predict Material Waste Risks (AI) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="940" rx="135" ry="22" fill="#f5d0fe" stroke="#a21caf" stroke-width="2"/>
+    <text x="830" y="945" text-anchor="middle" font-size="11.5" font-weight="800" fill="#701a75">Predict Material Waste Risks (AI)</text>
+  </g>
+
+  <!-- Sub UC (Right 2 - Reports): View Consumption & Waste Analytics -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="995" rx="135" ry="22" fill="#ffffff" stroke="#4f46e5" stroke-width="1.6"/>
+    <text x="830" y="1000" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">View Consumption &amp; Waste Analytics</text>
+  </g>
+
+  <!-- Extend Arrow: AI Waste Prediction -> Monitor Waste -->
+  <line x1="695" y1="943" x2="560" y2="952" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="940" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;extend&gt;&gt;</text>
+
+  <!-- Include Arrow: Monitor Waste -> View Analytics -->
+  <line x1="560" y1="960" x2="695" y2="990" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="635" y="983" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+
+  <!-- ================= ACTOR: Project Manager (Left) ================= -->
+  <g id="actorStick">
+    <circle cx="105" cy="560" r="16" fill="none" stroke="#0284c7" stroke-width="3"/>
+    <line x1="105" y1="576" x2="105" y2="620" stroke="#0284c7" stroke-width="3"/>
+    <line x1="80" y1="595" x2="130" y2="595" stroke="#0284c7" stroke-width="3"/>
+    <line x1="105" y1="620" x2="85" y2="660" stroke="#0284c7" stroke-width="3"/>
+    <line x1="105" y1="620" x2="125" y2="660" stroke="#0284c7" stroke-width="3"/>
+    <text x="105" y="685" text-anchor="middle" font-size="14" font-weight="900" fill="#0f172a">Project Manager</text>
+  </g>
+
+  <!-- CLEAN DIRECT ASSOCIATION LINES: Connecting ONLY to Left-Hand Primary UCs (Zero Crossings!) -->
+  <!-- Group 1 -->
+  <line x1="135" y1="560" x2="310" y2="165" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="565" x2="305" y2="235" stroke="#64748b" stroke-width="1.8"/>
+
+  <!-- Group 2 -->
+  <line x1="135" y1="575" x2="305" y2="355" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="580" x2="305" y2="425" stroke="#64748b" stroke-width="1.8"/>
+
+  <!-- Group 3 -->
+  <line x1="135" y1="595" x2="305" y2="595" stroke="#64748b" stroke-width="1.8"/>
+
+  <!-- Group 4 -->
+  <line x1="135" y1="610" x2="310" y2="760" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="620" x2="305" y2="825" stroke="#64748b" stroke-width="1.8"/>
+
+  <!-- Group 5 -->
+  <line x1="135" y1="630" x2="300" y2="955" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="640" x2="295" y2="1045" stroke="#64748b" stroke-width="1.8"/>
+
+
+  <!-- ================= RIGHT PANEL: LEGEND ================= -->
+  <rect id="legendBox" x="1100" y="30" width="315" height="340" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+  <text id="legendTitle" x="1120" y="58" font-size="14" font-weight="900" fill="#0f172a">Legend (دليل الرسم)</text>
+
+  <circle cx="1135" cy="85" r="7" fill="none" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1135" y1="92" x2="1135" y2="108" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1125" y1="98" x2="1145" y2="98" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1135" y1="108" x2="1128" y2="118" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1135" y1="108" x2="1142" y2="118" stroke="#0284c7" stroke-width="2"/>
+  <text x="1170" y="103" font-size="12" font-weight="700" fill="#334155">Actor (مدير المشروع)</text>
+
+  <ellipse cx="1135" cy="140" rx="22" ry="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="1170" y="144" font-size="12" font-weight="700" fill="#334155">Base Primary UC (أساسي)</text>
+
+  <ellipse cx="1135" cy="175" rx="22" ry="12" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="1170" y="179" font-size="12" font-weight="700" fill="#334155">Included / Extended UC (فرعي)</text>
+
+  <ellipse cx="1135" cy="210" rx="22" ry="12" fill="#f5d0fe" stroke="#a21caf" stroke-width="1.8"/>
+  <text x="1170" y="214" font-size="12" font-weight="800" fill="#701a75">AI Prediction Engine (ذكاء اصطناعي)</text>
+
+  <ellipse cx="1135" cy="245" rx="22" ry="12" fill="#fdf4ff" stroke="#c026d3" stroke-width="2"/>
+  <text x="1170" y="249" font-size="12" font-weight="800" fill="#86198f">AI Chatbot Assistant (المساعد الذكي)</text>
+
+  <line x1="1115" y1="280" x2="1155" y2="280" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="1170" y="284" font-size="12" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt; / &lt;&lt;extend&gt;&gt;</text>
+</svg>

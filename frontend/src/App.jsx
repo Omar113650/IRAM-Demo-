@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import AIAssistantDrawer from './components/AIAssistantDrawer';
 import NavigationStackBar from './components/NavigationStackBar';
+import MobileBottomNav from './components/MobileBottomNav';
 
 // Views
 import LandingPage from './views/LandingPage';
@@ -45,6 +46,7 @@ export default function App() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState('PRJ-001');
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Logout Handlers
   const handleTriggerLogout = () => {
@@ -57,13 +59,19 @@ export default function App() {
     setCurrentView('landing');
   };
 
-  // Navigation Stack History
-  const [navStack, setNavStack] = useState([
+  // Bidirectional Navigation History Engine
+  const [navHistory, setNavHistory] = useState([
     { view: 'admin', labelAr: 'إدارة الشركة والصلاحيات', labelEn: 'Company Admin & RBAC', projectId: 'PRJ-001' }
   ]);
+  const [historyIndex, setHistoryIndex] = useState(0);
 
-  // Navigate forward and push to stack
-  const navigateTo = (newView, meta = {}) => {
+  const canGoBack = historyIndex > 0;
+  const canGoForward = historyIndex < navHistory.length - 1;
+  const previousItem = canGoBack ? navHistory[historyIndex - 1] : null;
+  const nextItem = canGoForward ? navHistory[historyIndex + 1] : null;
+
+  // Navigate forward and push to history
+  const navigateTo = (newView, meta = {}, pushBrowser = true) => {
     if (newView === 'landing') {
       setCurrentView('landing');
       return;
@@ -97,28 +105,37 @@ export default function App() {
       ...meta
     };
 
-    setNavStack(prev => {
-      // Avoid duplicate consecutive identical items in stack
-      if (prev.length > 0) {
-        const top = prev[prev.length - 1];
-        if (top.view === newView && top.projectId === targetProjId) {
-          return prev;
-        }
+    setNavHistory(prev => {
+      // Avoid duplicate consecutive identical items in history
+      const current = prev[historyIndex];
+      if (current && current.view === newView && current.projectId === targetProjId) {
+        return prev;
       }
-      return [...prev, newStackItem];
+      const trimmed = prev.slice(0, historyIndex + 1);
+      const updated = [...trimmed, newStackItem];
+      setHistoryIndex(updated.length - 1);
+      return updated;
     });
 
     setCurrentView(newView);
+
+    if (pushBrowser && typeof window !== 'undefined') {
+      try {
+        window.history.pushState({ view: newView, projectId: targetProjId }, '', `#${newView}`);
+      } catch (e) {
+        // Safe fallback in restricted environments
+      }
+    }
   };
 
-  // Pop from stack (Go Back)
+  // Pop from history (Go Back - الرجوع)
   const goBack = () => {
-    if (navStack.length > 1) {
-      const updated = navStack.slice(0, -1);
-      const prev = updated[updated.length - 1];
-      setNavStack(updated);
-      setCurrentView(prev.view);
-      if (prev.projectId) setSelectedProjectId(prev.projectId);
+    if (historyIndex > 0) {
+      const targetIndex = historyIndex - 1;
+      const target = navHistory[targetIndex];
+      setHistoryIndex(targetIndex);
+      setCurrentView(target.view);
+      if (target.projectId) setSelectedProjectId(target.projectId);
     } else {
       // At stack root, fall back to default role view or landing
       const defaultView = getDefaultViewForRole(currentRole);
@@ -130,12 +147,22 @@ export default function App() {
     }
   };
 
-  // Jump directly to an ancestor crumb in the stack
+  // Step Forward in History (التقدم)
+  const goForward = () => {
+    if (historyIndex < navHistory.length - 1) {
+      const targetIndex = historyIndex + 1;
+      const target = navHistory[targetIndex];
+      setHistoryIndex(targetIndex);
+      setCurrentView(target.view);
+      if (target.projectId) setSelectedProjectId(target.projectId);
+    }
+  };
+
+  // Jump directly to an ancestor crumb in the history
   const jumpToStackIndex = (index) => {
-    if (index >= 0 && index < navStack.length) {
-      const updated = navStack.slice(0, index + 1);
-      const target = updated[index];
-      setNavStack(updated);
+    if (index >= 0 && index < navHistory.length) {
+      const target = navHistory[index];
+      setHistoryIndex(index);
       setCurrentView(target.view);
       if (target.projectId) setSelectedProjectId(target.projectId);
     }
@@ -143,13 +170,33 @@ export default function App() {
 
   // Reset to root crumb of current stack
   const resetToRoot = () => {
-    if (navStack.length > 0) {
-      const root = navStack[0];
-      setNavStack([root]);
+    if (navHistory.length > 0) {
+      const root = navHistory[0];
+      setNavHistory([root]);
+      setHistoryIndex(0);
       setCurrentView(root.view);
       if (root.projectId) setSelectedProjectId(root.projectId);
     }
   };
+
+  // Sync with native browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = (event) => {
+      if (event.state && event.state.view) {
+        const { view, projectId } = event.state;
+        setCurrentView(view);
+        if (projectId) setSelectedProjectId(projectId);
+      } else if (window.location.hash) {
+        const hashView = window.location.hash.replace('#', '');
+        if (viewCatalog[hashView]) {
+          setCurrentView(hashView);
+        }
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const getDefaultViewForRole = (role) => {
     if (role === 'Company Admin') return 'admin';
@@ -167,9 +214,10 @@ export default function App() {
     const targetView = getDefaultViewForRole(newRole);
     const initialMeta = viewCatalog[targetView] || { labelAr: 'الرئيسية', labelEn: 'Dashboard' };
     
-    setNavStack([
+    setNavHistory([
       { view: targetView, labelAr: initialMeta.labelAr, labelEn: initialMeta.labelEn, projectId: selectedProjectId }
     ]);
+    setHistoryIndex(0);
     setCurrentView(targetView);
   };
 
@@ -190,6 +238,7 @@ export default function App() {
             handleRoleChange(role);
           }}
           language={language}
+          onLanguageToggle={toggleLanguage}
         />
 
         <AuthModal
@@ -210,7 +259,7 @@ export default function App() {
     return (
       <div 
         dir={language === 'ar' ? 'rtl' : 'ltr'} 
-        className={`min-h-screen bg-[#EEF2F6] flex flex-col ${language === 'ar' ? 'font-arabic' : 'font-sans'}`}
+        className={`min-h-screen bg-[#FFFDF9] text-[#26231F] flex flex-col ${language === 'ar' ? 'font-arabic' : 'font-sans'}`}
       >
         <SupplierPortalView 
           language={language}
@@ -242,7 +291,7 @@ export default function App() {
   return (
     <div 
       dir={language === 'ar' ? 'rtl' : 'ltr'} 
-      className={`min-h-screen bg-[#EEF2F6] flex flex-col ${language === 'ar' ? 'font-arabic' : 'font-sans'}`}
+      className={`min-h-screen bg-[#FFFDF9] text-[#26231F] flex flex-col ${language === 'ar' ? 'font-arabic' : 'font-sans'}`}
     >
       {/* Top Global Navbar */}
       <Navbar
@@ -253,6 +302,7 @@ export default function App() {
         onOpenAssistant={() => setIsAssistantOpen(true)}
         onLogout={handleTriggerLogout}
         onOpenLanding={() => setCurrentView('landing')}
+        onToggleMobileSidebar={() => setIsMobileSidebarOpen(prev => !prev)}
       />
 
       {/* Main App Layout: Sidebar + Active View Content */}
@@ -265,20 +315,28 @@ export default function App() {
           currentRole={currentRole}
           language={language}
           onLogout={handleTriggerLogout}
+          isMobileOpen={isMobileSidebarOpen}
+          onCloseMobile={() => setIsMobileSidebarOpen(false)}
         />
 
         {/* Dynamic Workspace Container */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#EEF2F6] relative">
-          {/* Subtle architectural background canvas texture */}
-          <div className="absolute inset-0 opacity-[0.035] pointer-events-none bg-[radial-gradient(#0F172A_1px,transparent_1px)] [background-size:24px_24px]"></div>
+        <main className="flex-1 overflow-y-auto p-3 sm:p-6 lg:p-8 bg-[#FFFDF9] relative pb-24 md:pb-12">
+          {/* Subtle architectural grid pattern */}
+          <div className="absolute inset-0 opacity-[0.035] pointer-events-none bg-[radial-gradient(#26231F_1px,transparent_1px)] [background-size:24px_24px]"></div>
           <div className="w-full max-w-[1720px] mx-auto pb-12 relative z-10">
             
-            {/* Global Interactive Breadcrumb & Back Navigation Stack */}
+            {/* Global Interactive Breadcrumb & Back/Forward Navigation Stack */}
             <NavigationStackBar
-              navStack={navStack}
+              navHistory={navHistory}
+              historyIndex={historyIndex}
+              canGoBack={canGoBack}
+              canGoForward={canGoForward}
+              previousItem={previousItem}
+              nextItem={nextItem}
               currentView={currentView}
               selectedProjectId={selectedProjectId}
               onGoBack={goBack}
+              onGoForward={goForward}
               onJumpToStack={jumpToStackIndex}
               onResetToRoot={resetToRoot}
               onOpenLanding={() => setCurrentView('landing')}
@@ -404,6 +462,16 @@ export default function App() {
         onConfirmLogout={handleConfirmLogout}
         language={language}
         currentRole={currentRole}
+      />
+
+      {/* Mobile Sticky Bottom Navigation Bar */}
+      <MobileBottomNav
+        currentView={currentView}
+        onViewChange={navigateTo}
+        currentRole={currentRole}
+        language={language}
+        onToggleSidebar={() => setIsMobileSidebarOpen(prev => !prev)}
+        onOpenAssistant={() => setIsAssistantOpen(true)}
       />
 
     </div>

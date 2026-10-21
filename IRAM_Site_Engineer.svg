@@ -1,0 +1,194 @@
+<svg id="diagramSvg" width="1440" height="980" viewBox="0 0 1440 980" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Roboto, 'Cairo', sans-serif">
+  <defs>
+    <!-- Arrowhead for <<include>> and <<extend>> -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- White Canvas Background -->
+  <rect width="1440" height="980" fill="#ffffff" />
+
+  <!-- ================= SYSTEM BOUNDARY ================= -->
+  <rect x="250" y="30" width="830" height="920" rx="18" fill="#f8fafc" stroke="#0284c7" stroke-width="2.5" />
+  
+  <!-- Platform Header -->
+  <text x="665" y="66" text-anchor="middle" font-size="22" font-weight="900" fill="#0f172a" letter-spacing="0.5">IRAM Platform</text>
+  <text x="665" y="90" text-anchor="middle" font-size="15" font-weight="700" fill="#0284c7">Site Engineer Use Case Diagram (Project Operational Scope)</text>
+
+
+  <!-- ================= GROUP 1: Material Requirements Submission (Blue) ================= -->
+  <rect x="270" y="110" width="790" height="205" rx="12" fill="#f0f9ff" stroke="#38bdf8" stroke-width="1.8" />
+  <text x="290" y="132" font-size="13" font-weight="800" fill="#0369a1">1. Material Requirements &amp; Requests Submission</text>
+
+  <!-- Main UC (Left): Submit Material Requirement -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="175" rx="120" ry="24" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.8"/>
+    <text x="430" y="180" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">Submit Material Requirement</text>
+  </g>
+
+  <!-- Main UC (Left): Manage Material Requirements -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="255" rx="125" ry="25" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.8"/>
+    <text x="430" y="260" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">Manage Material Requirements</text>
+  </g>
+
+  <!-- Sub UC (Right): Specify Specifications & Quantities (Include) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="175" rx="135" ry="24" fill="#ffffff" stroke="#0284c7" stroke-width="1.6"/>
+    <text x="830" y="180" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">Specify Specifications &amp; Quantities</text>
+  </g>
+
+  <!-- Include Arrow: Submit -> Specify Details -->
+  <line x1="550" y1="175" x2="695" y2="175" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="622" y="167" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+  <!-- Sub UC (Right): Modify Submitted Requirement (Extend - Allowed per decision) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="255" rx="135" ry="24" fill="#ffffff" stroke="#0284c7" stroke-width="1.6"/>
+    <text x="830" y="260" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">Modify Submitted Requirement</text>
+  </g>
+
+  <!-- Extend Arrow: Modify points BACK to Manage Requirements -->
+  <line x1="695" y1="255" x2="555" y2="255" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="247" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;extend&gt;&gt;</text>
+
+
+  <!-- ================= GROUP 2: Requirement Status & Availability (Green) ================= -->
+  <rect x="270" y="325" width="790" height="200" rx="12" fill="#f0fdf4" stroke="#4ade80" stroke-width="1.8" />
+  <text x="290" y="347" font-size="13" font-weight="800" fill="#15803d">2. Status Tracking &amp; Project Availability</text>
+
+  <!-- Main UC (Left): Track Material Requirement Status -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="385" rx="125" ry="24" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
+    <text x="430" y="390" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">Track Material Requirement Status</text>
+  </g>
+
+  <!-- Main UC (Left): View Project Material Availability (Project-Scoped Only) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="465" rx="130" ry="25" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
+    <text x="430" y="470" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">View Project Material Availability</text>
+  </g>
+
+  <!-- Sub UC (Right): View Approval Decisions & Remarks (Include) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="385" rx="135" ry="23" fill="#ffffff" stroke="#16a34a" stroke-width="1.6"/>
+    <text x="830" y="390" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">View Approval Decisions &amp; Remarks</text>
+  </g>
+
+  <!-- Include Arrow: Track Status -> Decisions -->
+  <line x1="555" y1="385" x2="695" y2="385" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="377" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+  <!-- Sub UC (Right): Check Site Staging Stock (Include) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="465" rx="130" ry="23" fill="#ffffff" stroke="#16a34a" stroke-width="1.6"/>
+    <text x="830" y="470" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">Check Site Staging Stock</text>
+  </g>
+
+  <!-- Include Arrow: View Availability -> Staging Stock -->
+  <line x1="560" y1="465" x2="700" y2="465" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="630" y="457" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+
+  <!-- ================= GROUP 3: Site Consumption Logging (Purple) ================= -->
+  <rect x="270" y="535" width="790" height="155" rx="12" fill="#faf5ff" stroke="#c084fc" stroke-width="1.8" />
+  <text x="290" y="557" font-size="13" font-weight="800" fill="#7e22ce">3. Site Material Consumption Logging</text>
+
+  <!-- Main UC (Left): Record Material Consumption -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="615" rx="125" ry="25" fill="#f3e8ff" stroke="#9333ea" stroke-width="2"/>
+    <text x="430" y="620" text-anchor="middle" font-size="12" font-weight="800" fill="#581c87">Record Material Consumption</text>
+  </g>
+
+  <!-- Sub UC (Right): Log Daily Material Usage (Include) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="615" rx="135" ry="24" fill="#ffffff" stroke="#9333ea" stroke-width="1.6"/>
+    <text x="830" y="620" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">Log Daily Material Usage</text>
+  </g>
+
+  <!-- Include Arrow: Record -> Daily Usage -->
+  <line x1="555" y1="615" x2="695" y2="615" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="625" y="607" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+
+  <!-- ================= GROUP 4: Surplus Reporting & Alerts (Orange) ================= -->
+  <rect x="270" y="700" width="790" height="235" rx="12" fill="#fff7ed" stroke="#fb923c" stroke-width="1.8" />
+  <text x="290" y="722" font-size="13" font-weight="800" fill="#c2410c">4. Surplus Reporting, Transfer Triggers &amp; Site Alerts</text>
+
+  <!-- Main UC (Left): Report Material Surplus -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="770" rx="120" ry="25" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
+    <text x="430" y="775" text-anchor="middle" font-size="12" font-weight="800" fill="#9a3412">Report Material Surplus</text>
+  </g>
+
+  <!-- Main UC (Left): View Notifications and Alerts -->
+  <g filter="url(#shadow)">
+    <ellipse cx="430" cy="860" rx="125" ry="24" fill="#ffedd5" stroke="#ea580c" stroke-width="1.8"/>
+    <text x="430" y="865" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">View Notifications and Alerts</text>
+  </g>
+
+  <!-- Sub UC (Right): Generate Internal Transfer Proposal (Key User Decision: System triggers it automatically) -->
+  <g filter="url(#shadow)">
+    <ellipse cx="830" cy="770" rx="140" ry="25" fill="#fef08a" stroke="#ca8a04" stroke-width="2"/>
+    <text x="830" y="775" text-anchor="middle" font-size="11.5" font-weight="800" fill="#713f12">Generate Transfer Proposal (System)</text>
+  </g>
+
+  <!-- Include Arrow: Report Surplus -> Generate Transfer Proposal (Mandatory system trigger) -->
+  <line x1="550" y1="770" x2="690" y2="770" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="620" y="762" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt;</text>
+
+
+  <!-- ================= ACTOR: Site Engineer (Left) ================= -->
+  <g id="actorStick">
+    <circle cx="105" cy="490" r="16" fill="none" stroke="#0284c7" stroke-width="3"/>
+    <line x1="105" y1="506" x2="105" y2="550" stroke="#0284c7" stroke-width="3"/>
+    <line x1="80" y1="525" x2="130" y2="525" stroke="#0284c7" stroke-width="3"/>
+    <line x1="105" y1="550" x2="85" y2="590" stroke="#0284c7" stroke-width="3"/>
+    <line x1="105" y1="550" x2="125" y2="590" stroke="#0284c7" stroke-width="3"/>
+    <text x="105" y="615" text-anchor="middle" font-size="14" font-weight="900" fill="#0f172a">Site Engineer</text>
+  </g>
+
+  <!-- CLEAN DIRECT ASSOCIATION LINES TO PRIMARY LEFT UCs (Zero Crossings!) -->
+  <!-- Group 1 -->
+  <line x1="135" y1="495" x2="310" y2="175" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="505" x2="305" y2="255" stroke="#64748b" stroke-width="1.8"/>
+
+  <!-- Group 2 -->
+  <line x1="135" y1="520" x2="305" y2="385" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="135" y1="530" x2="300" y2="465" stroke="#64748b" stroke-width="1.8"/>
+
+  <!-- Group 3 -->
+  <line x1="135" y1="545" x2="305" y2="615" stroke="#64748b" stroke-width="1.8"/>
+
+  <!-- Group 4 -->
+  <line x1="130" y1="560" x2="310" y2="770" stroke="#64748b" stroke-width="1.8"/>
+  <line x1="130" y1="575" x2="305" y2="860" stroke="#64748b" stroke-width="1.8"/>
+
+
+  <!-- ================= RIGHT PANEL: LEGEND ================= -->
+  <rect x="1100" y="30" width="310" height="280" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+  <text x="1120" y="58" font-size="14" font-weight="900" fill="#0f172a">Legend (دليل الرسم)</text>
+
+  <circle cx="1135" cy="85" r="7" fill="none" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1135" y1="92" x2="1135" y2="108" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1125" y1="98" x2="1145" y2="98" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1135" y1="108" x2="1128" y2="118" stroke="#0284c7" stroke-width="2"/>
+  <line x1="1135" y1="108" x2="1142" y2="118" stroke="#0284c7" stroke-width="2"/>
+  <text x="1170" y="103" font-size="12" font-weight="700" fill="#334155">Actor (مهندس الموقع)</text>
+
+  <ellipse cx="1135" cy="140" rx="22" ry="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="1170" y="144" font-size="12" font-weight="700" fill="#334155">Base Primary UC (أساسي)</text>
+
+  <ellipse cx="1135" cy="175" rx="22" ry="12" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="1170" y="179" font-size="12" font-weight="700" fill="#334155">Included / Extended UC (فرعي)</text>
+
+  <ellipse cx="1135" cy="210" rx="22" ry="12" fill="#fef08a" stroke="#ca8a04" stroke-width="1.8"/>
+  <text x="1170" y="214" font-size="12" font-weight="700" fill="#334155">Automated System Action (تلقائي)</text>
+
+  <line x1="1115" y1="245" x2="1155" y2="245" stroke="#334155" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="1170" y="249" font-size="12" font-weight="700" fill="#334155">&lt;&lt;include&gt;&gt; / &lt;&lt;extend&gt;&gt;</text>
+</svg>
